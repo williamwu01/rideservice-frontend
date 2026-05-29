@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -53,6 +54,17 @@ export default function Hero() {
                 </li>
               ))}
             </ul>
+
+            {/* CTA buttons */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              <Link
+                href="/book"
+                className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors"
+              >
+                Book a Ride
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
 
             {/* CTA — WhatsApp booking */}
             {status === "success" ? (
