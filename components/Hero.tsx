@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 
 const Globe3D = dynamic(() => import("./Globe3D"), { ssr: false });
 
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export default function Hero() {
