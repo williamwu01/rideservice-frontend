@@ -1,125 +1,38 @@
 import Link from "next/link";
 
-const popularRoutes = [
-  "Toronto → Ottawa",
-  "Vancouver → Kelowna",
-  "Calgary → Edmonton",
-  "Toronto → Hamilton",
-  "Montreal → Ottawa",
-  "Kitchener → Toronto",
-  "Barrie → Toronto",
-];
-
-const majorCities = [
-  "Toronto", "Vancouver", "Montreal", "Calgary",
-  "Ottawa", "Hamilton", "London", "Kitchener",
-  "Winnipeg", "Halifax", "Barrie", "Kelowna",
-];
-
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">L</span>
-              </div>
-              <span className="text-white font-bold text-lg">Loop</span>
-            </div>
-            <p className="text-sm leading-relaxed mb-6">
-              Canada&apos;s trusted rideshare and carpool platform. Move, Deliver,
-              Connect — all with Loop.
-            </p>
-            <div className="flex gap-3">
-              {[
-                { label: "f", href: "#", title: "Facebook" },
-                { label: "in", href: "#", title: "Instagram" },
-                { label: "𝕏", href: "#", title: "X / Twitter" },
-                { label: "li", href: "#", title: "LinkedIn" },
-              ].map(({ label, href, title }) => (
-                <a
-                  key={title}
-                  href={href}
-                  title={title}
-                  className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-indigo-600 transition-colors text-gray-400 hover:text-white text-xs font-bold"
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
+    <footer className="bg-[#030810] border-t border-white/5 py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* Logo */}
+          <div className="flex items-center">
+            <img
+              src="/logo.svg"
+              alt="RideLink YVR"
+              className="h-8 w-auto rounded-md opacity-80"
+            />
           </div>
 
-          {/* Company */}
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Company</h4>
-            <ul className="space-y-2 text-sm">
-              {["About Us", "Blog", "Contact", "Careers"].map((item) => (
-                <li key={item}>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Services</h4>
-            <ul className="space-y-2 text-sm">
-              {["How It Works", "Drive With Us", "Safety", "Package Delivery", "Loop Coins"].map((item) => (
-                <li key={item}>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Popular Routes */}
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Popular Routes</h4>
-            <ul className="space-y-2 text-sm">
-              {popularRoutes.map((route) => (
-                <li key={route}>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    {route}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Cities */}
-          <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Major Cities</h4>
-            <ul className="space-y-2 text-sm">
-              {majorCities.slice(0, 8).map((city) => (
-                <li key={city}>
-                  <Link href="#" className="hover:text-white transition-colors">
-                    {city}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm">
-            © {new Date().getFullYear()} Loop Rideshare. All rights reserved.
-          </p>
-          <div className="flex gap-6 text-sm">
-            {["Terms of Service", "Privacy Policy", "Delete Account"].map((item) => (
-              <Link key={item} href="#" className="hover:text-white transition-colors">
-                {item}
-              </Link>
+          {/* Links */}
+          <div className="flex flex-wrap gap-6 text-sm text-gray-600">
+            {["Privacy", "Terms", "Safety", "Contact"].map((l) => (
+              <a key={l} href={`#${l.toLowerCase()}`} className="hover:text-gray-400 transition-colors">{l}</a>
             ))}
           </div>
+
+          {/* Book CTA */}
+          <Link
+            href="/book"
+            className="bg-[#d4af37] hover:bg-[#c9a227] text-black text-sm font-bold px-5 py-2.5 rounded-lg uppercase tracking-wide transition-all"
+          >
+            Book a Ride
+          </Link>
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-700">
+          <span>© 2026 Loop Rideshare Inc. All rights reserved.</span>
+          <span>Official Transportation Partner · FIFA World Cup 2026™</span>
         </div>
       </div>
     </footer>

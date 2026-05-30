@@ -21,6 +21,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Landing page dark sections */
+#home, #about, #how-it-works, #cities, #drive, #safety, #blog, #faq, #contact {
+  scroll-margin-top: 64px;
+}
+
 html {
   scroll-behavior: smooth;
 }

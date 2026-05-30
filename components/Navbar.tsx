@@ -1,63 +1,74 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "About", href: "#about" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Cities", href: "#cities" },
-  { label: "Routes", href: "#routes" },
   { label: "Drive With Us", href: "#drive" },
   { label: "Safety", href: "#safety" },
-  { label: "Blog", href: "#blog" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#050B1A]/90 backdrop-blur-md border-b border-white/5 shadow-lg shadow-black/20"
+          : "bg-transparent"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">L</span>
-            </div>
-            <span className="text-xl font-bold text-indigo-600">Loop</span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <img
+              src="/logo.svg"
+              alt="RideLink YVR"
+              className="h-9 w-auto rounded-md"
+            />
           </Link>
 
-          {/* Desktop Nav */}
+          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors"
+                className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
               >
                 {link.label}
               </a>
             ))}
           </nav>
 
-          {/* Right side */}
+          {/* Right */}
           <div className="hidden lg:flex items-center gap-3">
-            <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-indigo-600 transition-colors">
-              EN <ChevronDown className="w-3 h-3" />
-            </button>
-            <a
-              href="#book"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            <Link
+              href="/book"
+              className="bg-[#d4af37] hover:bg-[#c9a227] text-black text-sm font-bold px-5 py-2.5 rounded-lg uppercase tracking-wide transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
             >
-              Book a Ride
-            </a>
+              Book Now
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden p-2 rounded-md text-gray-600"
+            className="lg:hidden p-2 text-gray-400 hover:text-white transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -66,27 +77,36 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      {menuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-2">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="block py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#book"
-            className="block mt-3 bg-indigo-600 text-white text-sm font-semibold px-4 py-2 rounded-lg text-center"
-            onClick={() => setMenuOpen(false)}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-[#050B1A]/95 backdrop-blur-md border-t border-white/5 overflow-hidden"
           >
-            Book a Ride
-          </a>
-        </div>
-      )}
+            <div className="px-4 py-4 space-y-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-3 px-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <Link
+                href="/book"
+                className="block mt-3 bg-[#d4af37] text-black text-sm font-bold px-4 py-3 rounded-lg text-center uppercase tracking-wide"
+                onClick={() => setMenuOpen(false)}
+              >
+                Book Now
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

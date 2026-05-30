@@ -162,11 +162,8 @@ export default function BookPage() {
       {/* Header */}
       <header className="border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-indigo-600 font-bold text-lg">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white text-sm font-bold">L</span>
-            </div>
-            Loop
+          <Link href="/">
+            <img src="/logo.svg" alt="RideLink YVR" className="h-8 w-auto rounded-md" />
           </Link>
           <span className="text-sm text-gray-500">Book a Ride</span>
         </div>
