@@ -61,7 +61,7 @@ export default function Hero() {
                 href="/book"
                 className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors"
               >
-                Book a Ride
+                Get a Estimate
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

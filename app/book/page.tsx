@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import AddressInput from "@/components/AddressInput";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -218,34 +219,24 @@ export default function BookPage() {
             <form onSubmit={handleGetEstimate} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Pickup location</label>
-                <div className="relative">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
-                  </div>
-                  <input
-                    value={pickup}
-                    onChange={(e) => { setPickup(e.target.value); setEstimate(null); }}
-                    placeholder="e.g. Vancouver International Airport"
-                    required
-                    className="w-full pl-8 pr-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
+                <AddressInput
+                  value={pickup}
+                  onChange={(v) => { setPickup(v); setEstimate(null); }}
+                  placeholder="e.g. YVR, Vancouver Airport, 3211 Grant McConachie Way"
+                  dotColor="indigo"
+                  required
+                />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Destination</label>
-                <div className="relative">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-purple-500" />
-                  </div>
-                  <input
-                    value={destination}
-                    onChange={(e) => { setDestination(e.target.value); setEstimate(null); }}
-                    placeholder="e.g. BC Place Stadium, Vancouver"
-                    required
-                    className="w-full pl-8 pr-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
+                <AddressInput
+                  value={destination}
+                  onChange={(v) => { setDestination(v); setEstimate(null); }}
+                  placeholder="e.g. BC Place, Downtown Vancouver"
+                  dotColor="purple"
+                  required
+                />
               </div>
 
               {estimateError && (
