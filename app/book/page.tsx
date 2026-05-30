@@ -108,21 +108,15 @@ export default function BookPage() {
     setPromoLoading(true);
     setPromoError("");
     try {
-      // Validate promo without redeeming — create-order will validate properly
-      const res = await fetch(`${API_URL}/api/payment/create-order`, {
+      const res = await fetch(`${API_URL}/api/payment/validate-promo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          bookingId,
-          promoCode: promoCode.trim().toUpperCase(),
-        }),
+        body: JSON.stringify({ bookingId, promoCode: promoCode.trim().toUpperCase() }),
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.error || "Invalid promo code");
-      setPromoDiscount(data.breakdown.promoDiscount);
+      setPromoDiscount(data.discount);
       setPromoApplied(true);
-      // If valid, proceed straight to payment
-      window.location.href = data.approveUrl;
     } catch (err: unknown) {
       setPromoError(err instanceof Error ? err.message : "Invalid promo code");
     } finally {
@@ -140,6 +134,7 @@ export default function BookPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bookingId,
+          ...(promoApplied && promoCode.trim() && { promoCode: promoCode.trim().toUpperCase() }),
           returnUrl: `${origin}/book/success`,
           cancelUrl: `${origin}/book/cancel`,
         }),
