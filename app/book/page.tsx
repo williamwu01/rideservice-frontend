@@ -20,37 +20,48 @@ type Estimate = {
   };
 };
 
-type Step = "route" | "details" | "payment";
+type Driver = {
+  firstName: string;
+  lastName: string;
+  carModel: string;
+  carNameplate: string;
+  photo: string | null;
+};
+
+type Step = "route" | "details" | "confirm";
 
 export default function BookPage() {
-  // Step tracking
   const [step, setStep] = useState<Step>("route");
 
-  // Route step
+  // Step 1 — route
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [estimate, setEstimate] = useState<Estimate | null>(null);
   const [estimateLoading, setEstimateLoading] = useState(false);
   const [estimateError, setEstimateError] = useState("");
 
-  // Details step
+  // Step 2 — details
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [pickupTime, setPickupTime] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
+  const [pickupTimeStr, setPickupTimeStr] = useState("");
   const [passengers, setPassengers] = useState(1);
   const [luggage, setLuggage] = useState(0);
+  const [specialRequests, setSpecialRequests] = useState("");
+  const [findingDriver, setFindingDriver] = useState(false);
+  const [findError, setFindError] = useState("");
 
-  // Payment step
+  // Step 3 — confirm & pay
+  const [bookingId, setBookingId] = useState("");
+  const [driver, setDriver] = useState<Driver | null>(null);
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [promoError, setPromoError] = useState("");
   const [promoLoading, setPromoLoading] = useState(false);
-  const [bookingId, setBookingId] = useState("");
-  const [bookingLoading, setBookingLoading] = useState(false);
-  const [bookingError, setBookingError] = useState("");
   const [payLoading, setPayLoading] = useState(false);
+  const [payError, setPayError] = useState("");
 
   async function handleGetEstimate(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -71,11 +82,18 @@ export default function BookPage() {
     }
   }
 
-  async function handleBooking() {
-    setBookingLoading(true);
-    setBookingError("");
+  async function handleFindDriver() {
+    if (!firstName || !lastName || !phone) return;
+    setFindingDriver(true);
+    setFindError("");
+
+    const scheduledPickupAt =
+      pickupDate && pickupTimeStr
+        ? new Date(`${pickupDate}T${pickupTimeStr}:00`).toISOString()
+        : null;
+
     try {
-      const res = await fetch(`${API_URL}/api/book-ride`, {
+      const res = await fetch(`${API_URL}/api/book-ride-web`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -84,22 +102,25 @@ export default function BookPage() {
           lastName,
           pickup,
           destination,
-          pickupTime: pickupTime || "ASAP",
           passengers,
           luggage,
+          scheduledPickupAt,
+          pickupTime: scheduledPickupAt ? undefined : "ASAP",
           estimatedFare: estimate?.fare,
           distanceKm: estimate?.distanceKm,
           durationMin: estimate?.durationMin,
+          specialRequests: specialRequests || undefined,
         }),
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.error || "Failed to create booking");
-      setBookingId(data.booking.id);
-      setStep("payment");
+      if (!data.success) throw new Error(data.error || "No drivers available");
+      setBookingId(data.bookingId);
+      setDriver(data.driver);
+      setStep("confirm");
     } catch (err: unknown) {
-      setBookingError(err instanceof Error ? err.message : "Booking failed. Please try again.");
+      setFindError(err instanceof Error ? err.message : "Could not find a driver. Please try again.");
     } finally {
-      setBookingLoading(false);
+      setFindingDriver(false);
     }
   }
 
@@ -127,7 +148,7 @@ export default function BookPage() {
 
   async function handlePay() {
     setPayLoading(true);
-    setBookingError("");
+    setPayError("");
     try {
       const origin = window.location.origin;
       const res = await fetch(`${API_URL}/api/payment/create-order`, {
@@ -144,7 +165,7 @@ export default function BookPage() {
       if (!data.success) throw new Error(data.error || "Payment setup failed");
       window.location.href = data.approveUrl;
     } catch (err: unknown) {
-      setBookingError(err instanceof Error ? err.message : "Payment failed. Please try again.");
+      setPayError(err instanceof Error ? err.message : "Payment failed. Please try again.");
       setPayLoading(false);
     }
   }
@@ -154,7 +175,7 @@ export default function BookPage() {
   const steps: { key: Step; label: string; num: number }[] = [
     { key: "route", label: "Route", num: 1 },
     { key: "details", label: "Details", num: 2 },
-    { key: "payment", label: "Payment", num: 3 },
+    { key: "confirm", label: "Confirm", num: 3 },
   ];
 
   return (
@@ -219,12 +240,11 @@ export default function BookPage() {
                 <AddressInput
                   value={pickup}
                   onChange={(v) => { setPickup(v); setEstimate(null); }}
-                  placeholder="e.g. YVR, Vancouver Airport, 3211 Grant McConachie Way"
+                  placeholder="e.g. YVR, Vancouver Airport"
                   dotColor="indigo"
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Destination</label>
                 <AddressInput
@@ -245,18 +265,10 @@ export default function BookPage() {
                 disabled={estimateLoading}
                 className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {estimateLoading ? (
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                  </svg>
-                ) : (
-                  "Get Estimate"
-                )}
+                {estimateLoading ? <Spinner /> : "Get Estimate"}
               </button>
             </form>
 
-            {/* Estimate result */}
             {estimate && (
               <div className="mt-6 border-t border-gray-100 pt-6">
                 <div className="flex items-center justify-between mb-4">
@@ -271,18 +283,14 @@ export default function BookPage() {
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
+                <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm mb-4">
                   <p className="font-medium text-gray-700 text-xs uppercase tracking-wide mb-2">Breakdown</p>
                   <FareRow label="Base fare" value={estimate.breakdown.baseFare} />
                   <FareRow label="Distance" value={estimate.breakdown.distanceCost} />
                   <FareRow label="Time" value={estimate.breakdown.timeCost} />
                   <FareRow label="Booking fee" value={estimate.breakdown.bookingFee} />
-                  {estimate.breakdown.airportFee > 0 && (
-                    <FareRow label="Airport fee" value={estimate.breakdown.airportFee} />
-                  )}
-                  {estimate.breakdown.lateNightFee > 0 && (
-                    <FareRow label="Late night fee" value={estimate.breakdown.lateNightFee} />
-                  )}
+                  {estimate.breakdown.airportFee > 0 && <FareRow label="Airport fee" value={estimate.breakdown.airportFee} />}
+                  {estimate.breakdown.lateNightFee > 0 && <FareRow label="Late night fee" value={estimate.breakdown.lateNightFee} />}
                   <div className="border-t border-gray-200 pt-2 flex justify-between font-semibold text-gray-900">
                     <span>Total</span>
                     <span>${estimate.fare.toFixed(2)}</span>
@@ -291,7 +299,7 @@ export default function BookPage() {
 
                 <button
                   onClick={() => setStep("details")}
-                  className="mt-4 w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors"
+                  className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors"
                 >
                   Continue with this quote →
                 </button>
@@ -303,86 +311,52 @@ export default function BookPage() {
         {/* ── Step 2: Details ── */}
         {step === "details" && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-            <button
-              onClick={() => setStep("route")}
-              className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-5"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back
+            <button onClick={() => setStep("route")} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-5">
+              <ChevronLeft /> Back
             </button>
 
             <h2 className="text-xl font-bold text-gray-900 mb-1">Your details</h2>
-            <p className="text-sm text-gray-500 mb-6">Tell us about yourself and your trip.</p>
+            <p className="text-sm text-gray-500 mb-6">Tell us who you are and when you need the ride.</p>
 
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">First name</label>
-                  <input
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    placeholder="Alex"
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  <input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Alex" required className={inputCls} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Last name</label>
-                  <input
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    placeholder="Smith"
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  <input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Smith" required className={inputCls} />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp number</label>
                 <div className="flex">
-                  <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">
-                    +1
-                  </span>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="(604) 555-0100"
-                    required
-                    className="flex-1 px-4 py-3 rounded-r-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
+                  <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">+1</span>
+                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(604) 555-0100" required className="flex-1 px-4 py-3 rounded-r-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
-                <p className="text-xs text-gray-400 mt-1">We&apos;ll send your driver info here.</p>
+                <p className="text-xs text-gray-400 mt-1">We&apos;ll send your driver confirmation here.</p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Pickup time</label>
-                <input
-                  value={pickupTime}
-                  onChange={(e) => setPickupTime(e.target.value)}
-                  placeholder="ASAP — or e.g. May 29 at 3pm, tomorrow 10am"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <p className="text-xs text-gray-400 mt-1">Leave blank for ASAP pickup.</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Pickup date</label>
+                  <input type="date" value={pickupDate} onChange={(e) => setPickupDate(e.target.value)} min={new Date().toISOString().split("T")[0]} className={inputCls} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Pickup time</label>
+                  <input type="time" value={pickupTimeStr} onChange={(e) => setPickupTimeStr(e.target.value)} className={inputCls} />
+                </div>
               </div>
+              <p className="text-xs text-gray-400 -mt-2">Leave blank for ASAP pickup.</p>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
                 <div className="flex gap-2 flex-wrap">
                   {[1, 2, 3, 4, 5, 6].map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => setPassengers(n)}
-                      className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors ${
-                        passengers === n
-                          ? "bg-indigo-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
+                    <button key={n} type="button" onClick={() => setPassengers(n)}
+                      className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors ${passengers === n ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                       {n}
                     </button>
                   ))}
@@ -393,59 +367,63 @@ export default function BookPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Luggage bags</label>
                 <div className="flex gap-2 flex-wrap">
                   {[0, 1, 2, 3, 4, 5].map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => setLuggage(n)}
-                      className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors ${
-                        luggage === n
-                          ? "bg-indigo-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
+                    <button key={n} type="button" onClick={() => setLuggage(n)}
+                      className={`w-10 h-10 rounded-lg text-sm font-medium transition-colors ${luggage === n ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                       {n}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {bookingError && (
-                <p className="text-sm text-red-500 bg-red-50 rounded-lg px-3 py-2">{bookingError}</p>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Special requests <span className="text-gray-400">(optional)</span></label>
+                <textarea value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} rows={2} placeholder="e.g. child seat, accessibility needs" className={inputCls + " resize-none"} />
+              </div>
+
+              {findError && (
+                <p className="text-sm text-red-500 bg-red-50 rounded-lg px-3 py-2">{findError}</p>
               )}
 
               <button
-                onClick={handleBooking}
-                disabled={bookingLoading || !firstName || !lastName || !phone}
+                onClick={handleFindDriver}
+                disabled={findingDriver || !firstName || !lastName || !phone}
                 className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
               >
-                {bookingLoading ? (
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                  </svg>
-                ) : (
-                  "Continue to Payment →"
-                )}
+                {findingDriver ? <><Spinner /> Finding your driver...</> : "Find My Driver →"}
               </button>
             </div>
           </div>
         )}
 
-        {/* ── Step 3: Payment ── */}
-        {step === "payment" && estimate && (
+        {/* ── Step 3: Confirm & Pay ── */}
+        {step === "confirm" && driver && estimate && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-            <button
-              onClick={() => setStep("details")}
-              className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-5"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back
+            <button onClick={() => setStep("details")} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-5">
+              <ChevronLeft /> Back
             </button>
 
-            <h2 className="text-xl font-bold text-gray-900 mb-1">Review & Pay</h2>
-            <p className="text-sm text-gray-500 mb-6">Confirm your trip details and complete payment.</p>
+            <h2 className="text-xl font-bold text-gray-900 mb-1">Your driver is ready</h2>
+            <p className="text-sm text-gray-500 mb-6">Review your booking and complete payment to confirm.</p>
+
+            {/* Driver card */}
+            <div className="flex items-center gap-4 bg-indigo-50 rounded-xl p-4 mb-6">
+              <div className="w-14 h-14 rounded-full bg-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-lg flex-shrink-0">
+                {driver.photo
+                  ? <img src={driver.photo} alt="Driver" className="w-full h-full rounded-full object-cover" />
+                  : `${driver.firstName[0]}${driver.lastName[0]}`
+                }
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">{driver.firstName} {driver.lastName}</p>
+                <p className="text-sm text-gray-600">{driver.carModel}</p>
+                <p className="text-xs text-gray-400 uppercase tracking-wide font-mono">{driver.carNameplate}</p>
+              </div>
+              <div className="ml-auto text-right">
+                <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 rounded-full px-2 py-1 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" /> Available
+                </span>
+              </div>
+            </div>
 
             {/* Trip summary */}
             <div className="bg-gray-50 rounded-xl p-4 mb-6 space-y-2">
@@ -469,7 +447,9 @@ export default function BookPage() {
               <div className="border-t border-gray-200 pt-2 grid grid-cols-3 gap-2 text-center">
                 <div>
                   <p className="text-xs text-gray-400">Pickup</p>
-                  <p className="text-xs font-medium text-gray-700">{pickupTime || "ASAP"}</p>
+                  <p className="text-xs font-medium text-gray-700">
+                    {pickupDate && pickupTimeStr ? `${pickupDate} ${pickupTimeStr}` : "ASAP"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400">Passengers</p>
@@ -511,41 +491,25 @@ export default function BookPage() {
                     placeholder="e.g. FIFA2026"
                     className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-900 uppercase placeholder:normal-case focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
-                  <button
-                    type="submit"
-                    disabled={promoLoading || !promoCode.trim()}
-                    className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 disabled:opacity-50 transition-colors"
-                  >
+                  <button type="submit" disabled={promoLoading || !promoCode.trim()}
+                    className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 disabled:opacity-50 transition-colors">
                     {promoLoading ? "..." : "Apply"}
                   </button>
                 </div>
-                {promoError && (
-                  <p className="text-xs text-red-500 mt-1">{promoError}</p>
-                )}
+                {promoError && <p className="text-xs text-red-500 mt-1">{promoError}</p>}
               </form>
             )}
 
-            {bookingError && (
-              <p className="text-sm text-red-500 bg-red-50 rounded-lg px-3 py-2 mb-4">{bookingError}</p>
+            {payError && (
+              <p className="text-sm text-red-500 bg-red-50 rounded-lg px-3 py-2 mb-4">{payError}</p>
             )}
 
-            {/* Pay button */}
             <button
               onClick={handlePay}
               disabled={payLoading}
               className="w-full flex items-center justify-center gap-3 bg-[#0070ba] hover:bg-[#005ea6] text-white py-4 rounded-xl font-semibold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {payLoading ? (
-                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                </svg>
-              ) : (
-                <>
-                  <PayPalIcon />
-                  Pay ${finalFare.toFixed(2)} CAD with PayPal
-                </>
-              )}
+              {payLoading ? <Spinner /> : <><PayPalIcon /> Pay ${finalFare.toFixed(2)} CAD with PayPal</>}
             </button>
 
             <p className="text-xs text-center text-gray-400 mt-3">
@@ -558,12 +522,31 @@ export default function BookPage() {
   );
 }
 
+const inputCls = "w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500";
+
 function FareRow({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex justify-between text-gray-600">
       <span>{label}</span>
       <span>${value.toFixed(2)}</span>
     </div>
+  );
+}
+
+function Spinner() {
+  return (
+    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+    </svg>
+  );
+}
+
+function ChevronLeft() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+    </svg>
   );
 }
 
