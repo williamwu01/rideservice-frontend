@@ -27,16 +27,16 @@ export default function Cities() {
   const displayed = showAll ? cities : cities.slice(0, 12);
 
   return (
-    <section id="cities" className="py-20 bg-white">
+    <section id="cities" className="py-20 bg-white dark:bg-[#070E1C]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <span className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 uppercase tracking-wide">
             Service Areas
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
             Available in 20+ Canadian Cities
           </h2>
-          <p className="text-gray-600 max-w-xl mx-auto text-lg">
+          <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-lg">
             Loop connects riders and drivers across Canada. Find trips near you
             or post your route to any major city.
           </p>
@@ -47,14 +47,14 @@ export default function Cities() {
             <a
               key={city.name}
               href="#"
-              className="group flex items-center gap-3 p-4 border border-gray-100 rounded-xl hover:border-indigo-300 hover:shadow-md hover:-translate-y-0.5 transition-all"
+              className="group flex items-center gap-3 p-4 border border-gray-100 dark:border-white/10 rounded-xl hover:border-indigo-300 dark:hover:border-white/20 hover:shadow-md hover:-translate-y-0.5 transition-all"
             >
-              <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center group-hover:bg-indigo-100 transition-colors flex-shrink-0">
+              <div className="w-10 h-10 bg-indigo-50 dark:bg-white/5 rounded-xl flex items-center justify-center group-hover:bg-indigo-100 dark:group-hover:bg-white/10 transition-colors flex-shrink-0">
                 <MapPin className="w-5 h-5 text-indigo-600" />
               </div>
               <div>
-                <div className="font-semibold text-gray-900 text-sm">{city.name}</div>
-                <div className="text-gray-500 text-xs">{city.province} · {city.routes} active routes</div>
+                <div className="font-semibold text-gray-900 dark:text-white text-sm">{city.name}</div>
+                <div className="text-gray-500 dark:text-gray-400 text-xs">{city.province} · {city.routes} active routes</div>
               </div>
             </a>
           ))}

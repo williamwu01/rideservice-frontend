@@ -22,7 +22,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center bg-[#050B1A] overflow-hidden pt-16">
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-[#050B1A] overflow-hidden pt-16">
 
       {/* Background grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,160,220,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(0,160,220,0.04)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none" />
@@ -37,7 +37,7 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto">
+      <div className="relative z-10 pb-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto">
 
         {/* FIFA badge */}
         <motion.div
@@ -47,7 +47,7 @@ export default function Hero() {
           className="mb-6 inline-flex items-center gap-2 border border-[#d4af37]/40 bg-[#d4af37]/10 text-[#d4af37] text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-full"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#d4af37] animate-pulse" />
-          Official Ride Partner · FIFA World Cup 2026™
+          FIFA World Cup 2026™ · We Got You Covered! 
         </motion.div>
 
         {/* Headline */}
@@ -55,7 +55,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-4"
+          className="text-5xl sm:text-6xl lg:text-7xl font-black text-gray-900 dark:text-white leading-[1.05] tracking-tight mb-4"
         >
           RIDE THE
           <br />
@@ -70,9 +70,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed"
+          className="text-gray-600 dark:text-gray-400 text-lg max-w-xl mb-10 leading-relaxed"
         >
-          Premium private rides across Canada&apos;s FIFA 2026 host cities.
+          Premium private rides in Vancouver for FIFA 2026 visitors.
           Book instantly — no surge, no surprises.
         </motion.p>
 
@@ -95,7 +95,7 @@ export default function Hero() {
 
           <a
             href="#how-it-works"
-            className="inline-flex items-center gap-2 border border-white/20 text-white hover:border-white/50 font-semibold px-8 py-4 rounded-xl text-sm uppercase tracking-wide transition-all hover:bg-white/5"
+            className="inline-flex items-center gap-2 border border-gray-300 dark:border-white/20 text-gray-800 dark:text-white hover:border-gray-400 dark:hover:border-white/50 font-semibold px-8 py-4 rounded-xl text-sm uppercase tracking-wide transition-all hover:bg-gray-100 dark:hover:bg-white/5"
           >
             How It Works
           </a>
@@ -148,7 +148,7 @@ export default function Hero() {
                   onChange={(e) => { setStatus("idle"); setPhone(e.target.value); }}
                   placeholder="(604) 000-0000"
                   required
-                  className="w-full pl-10 pr-4 py-3.5 bg-white/5 border border-white/10 text-white placeholder:text-gray-600 rounded-xl text-sm focus:outline-none focus:border-[#00a0dc]/50 focus:ring-1 focus:ring-[#00a0dc]/30"
+                  className="w-full pl-10 pr-4 py-3.5 bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-600 rounded-xl text-sm focus:outline-none focus:border-[#00a0dc]/50 focus:ring-1 focus:ring-[#00a0dc]/30"
                 />
               </div>
               <button
@@ -204,8 +204,8 @@ export default function Hero() {
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-xs text-gray-600 uppercase tracking-widest">Scroll</span>
-        <div className="w-px h-10 bg-gradient-to-b from-gray-600 to-transparent" />
+        <span className="text-xs text-gray-500 dark:text-gray-600 uppercase tracking-widest">Scroll</span>
+        <div className="w-px h-10 bg-gradient-to-b from-gray-400 dark:from-gray-600 to-transparent" />
       </motion.div>
     </section>
   );

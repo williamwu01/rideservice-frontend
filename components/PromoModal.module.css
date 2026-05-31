@@ -1,0 +1,128 @@
+.logoWrap {
+  --char-size: 100px;
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: #1c2379;
+}
+
+.logo {
+  --r: calc(var(--char-size) / 3);
+  --gap: calc(var(--char-size) / 15);
+  --speed: 10s;
+
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  gap: var(--gap);
+  height: 100%;
+  isolation: isolate;
+}
+
+.num {
+  display: grid;
+  justify-content: center;
+}
+
+.numTwo {
+  align-content: end;
+  background: #ea394b;
+}
+
+.numTwo span {
+  transform-origin: 50% 100%;
+}
+
+.numSix {
+  align-content: start;
+  z-index: -1;
+}
+
+.numSix span {
+  transform-origin: 50% calc(sibling-index() * 0.01%);
+}
+
+.num span {
+  grid-row: 1;
+  grid-column: 1;
+  position: relative;
+  display: block;
+  width: calc(var(--r) * 4);
+  height: calc(var(--r) * 3);
+  container-type: size;
+  z-index: calc(sibling-count() - sibling-index());
+}
+
+.num span:not(:first-child) {
+  scale: calc((sibling-index() - 1) * var(--scale));
+  animation: scaleIt var(--speed, 0s) calc(sibling-index() * -100ms) ease-in-out infinite;
+}
+
+/* colour cycle — exact values from the original */
+.num span:nth-child(10n + 1)  { color: #f1fe67; }
+.num span:nth-child(10n + 2)  { color: #6b1d18; }
+.num span:nth-child(10n + 3)  { color: #c3291c; }
+.num span:nth-child(10n + 4)  { color: #ac89f7; }
+.num span:nth-child(10n + 5)  { color: #374ff5; }
+.num span:nth-child(10n + 6)  { color: #eb4f27; }
+.num span:nth-child(10n + 7)  { color: #bce949; }
+.num span:nth-child(10n + 8)  { color: #5a0de0; }
+.num span:nth-child(10n + 9)  { color: #91fbdc; }
+.num span:nth-child(10n + 10) { color: #1e4b3f; }
+/* first child always white — overrides the 10n+1 rule above */
+.num span:nth-child(1) { color: #fff; }
+
+.num span::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentcolor;
+}
+
+/* exact shape() paths from the CodePen */
+.numTwo span::before {
+  clip-path: shape(
+    from 0 var(--r),
+    arc to var(--r) 0 of var(--r) var(--r) cw,
+    line to calc(var(--r) * 3) 0,
+    arc to calc(var(--r) * 3) calc(var(--r) * 2) of var(--r) var(--r) cw,
+    line to calc(var(--r) * 4) calc(var(--r) * 2),
+    line to calc(var(--r) * 4) calc(var(--r) * 3),
+    line to 0 calc(var(--r) * 3),
+    line to 0 calc(var(--r) * 2),
+    arc to var(--r) var(--r) of var(--r) var(--r) cw,
+    close
+  );
+}
+
+.numSix span::before {
+  clip-path: shape(
+    from 0 var(--r),
+    arc to var(--r) 0 of var(--r) var(--r) cw,
+    line to calc(var(--r) * 3) 0,
+    arc to calc(var(--r) * 4) var(--r) of var(--r) var(--r) cw,
+    line to calc(var(--r) * 3) var(--r),
+    arc to calc(var(--r) * 3) calc(var(--r) * 3) of var(--r) var(--r) cw,
+    line to var(--r) calc(var(--r) * 3),
+    arc to 0 calc(var(--r) * 2) of var(--r) var(--r) cw,
+    close
+  );
+}
+
+/* FIFA image floats over the centre of the "26" */
+.logoImg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 99;
+  display: block;
+  height: calc(var(--char-size) * 1.55);
+  width: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@keyframes scaleIt {
+  20% { --scale: 2; }
+  40% { --scale: 0.6; }
+  70% { --scale: 1.4; }
+}

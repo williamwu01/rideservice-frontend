@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Providers } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const geist = Geist({
@@ -19,8 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} scroll-smooth`}>
-      <body className="min-h-screen flex flex-col antialiased">{children}</body>
+    <html lang="en" className={`${geist.variable} scroll-smooth`} suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col antialiased bg-white dark:bg-slate-950 text-slate-950 dark:text-white transition-colors">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

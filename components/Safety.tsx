@@ -41,16 +41,16 @@ const safetyFeatures = [
 
 export default function Safety() {
   return (
-    <section id="safety" className="py-20 bg-white">
+    <section id="safety" className="py-20 bg-white dark:bg-[#070E1C]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <span className="inline-block bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 uppercase tracking-wide">
             Safety First
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
             Your Safety Is Our Top Priority
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
             Loop is built with safety at its core. From driver verification to
             real-time tracking, every feature is designed to keep you protected.
           </p>
@@ -62,14 +62,14 @@ export default function Safety() {
             return (
               <div
                 key={feature.title}
-                className="flex gap-4 p-6 border border-gray-100 rounded-2xl hover:shadow-md hover:-translate-y-0.5 transition-all"
+                className="flex gap-4 p-6 border border-gray-100 dark:border-white/10 rounded-2xl hover:shadow-md hover:-translate-y-0.5 transition-all"
               >
                 <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Icon className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-1 text-sm">{feature.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{feature.description}</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm">{feature.title}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             );

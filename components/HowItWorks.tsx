@@ -32,20 +32,20 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-[#050B1A] py-24 px-4 relative overflow-hidden">
+    <section id="how-it-works" className="bg-white dark:bg-[#050B1A] py-24 px-4 relative overflow-hidden">
       {/* Background accent */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none" />
 
       <div className="max-w-5xl mx-auto">
         <ScrollReveal className="text-center mb-16">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#d4af37] mb-3 block">How It Works</span>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">Four Steps to Your Ride</h2>
-          <p className="text-gray-500 max-w-md mx-auto">From booking to drop-off in minutes.</p>
+          <h2 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white mb-4">Four Steps to Your Ride</h2>
+          <p className="text-gray-600 dark:text-gray-500 max-w-md mx-auto">From booking to drop-off in minutes.</p>
         </ScrollReveal>
 
         <div className="relative">
           {/* Vertical connector line */}
-          <div className="absolute left-[calc(2.5rem)] top-0 bottom-0 w-px bg-white/5 hidden sm:block" />
+          <div className="absolute left-[calc(2.5rem)] top-0 bottom-0 w-px bg-gray-200 dark:bg-white/5 hidden sm:block" />
 
           <div className="space-y-6">
             {steps.map((step, i) => (
@@ -57,9 +57,9 @@ export default function HowItWorks() {
                   >
                     {step.num}
                   </div>
-                  <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-6 flex-1 hover:border-white/15 transition-colors">
-                    <h3 className="text-white font-bold text-lg mb-2">{step.title}</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+                  <div className="bg-gray-50 border border-gray-100 dark:bg-white/[0.03] dark:border-white/[0.07] rounded-2xl p-6 flex-1 hover:border-gray-200 dark:hover:border-white/15 transition-colors">
+                    <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">{step.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-500 text-sm leading-relaxed">{step.desc}</p>
                   </div>
                 </div>
               </ScrollReveal>

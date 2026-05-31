@@ -84,16 +84,16 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<string | null>(null);
 
   return (
-    <section id="faq" className="py-20 bg-white">
+    <section id="faq" className="py-20 bg-white dark:bg-[#050B1A]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <span className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 uppercase tracking-wide">
             FAQ
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
             Everything you need to know about Loop Rideshare.
           </p>
         </div>
@@ -111,13 +111,13 @@ export default function FAQ() {
                   return (
                     <div
                       key={idx}
-                      className="border border-gray-100 rounded-xl overflow-hidden"
+                      className="border border-gray-100 dark:border-white/10 rounded-xl overflow-hidden"
                     >
                       <button
-                        className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+                        className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
                         onClick={() => setOpenIndex(isOpen ? null : key)}
                       >
-                        <span className="font-medium text-gray-900 text-sm pr-4">{item.q}</span>
+                        <span className="font-medium text-gray-900 dark:text-white text-sm pr-4">{item.q}</span>
                         <ChevronDown
                           className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform ${
                             isOpen ? "rotate-180" : ""
@@ -126,7 +126,7 @@ export default function FAQ() {
                       </button>
                       {isOpen && (
                         <div className="px-4 pb-4">
-                          <p className="text-gray-600 text-sm leading-relaxed">{item.a}</p>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{item.a}</p>
                         </div>
                       )}
                     </div>

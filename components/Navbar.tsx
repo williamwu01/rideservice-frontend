@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
   { label: "How It Works", href: "#how-it-works" },
@@ -27,7 +28,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#050B1A]/90 backdrop-blur-md border-b border-white/5 shadow-lg shadow-black/20"
+          ? "bg-white/90 dark:bg-[#050B1A]/90 backdrop-blur-md border-b border-gray-200 dark:border-white/5 shadow-lg shadow-black/10 dark:shadow-black/20"
           : "bg-transparent"
       }`}
     >
@@ -49,7 +50,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 {link.label}
               </a>
@@ -58,6 +59,7 @@ export default function Navbar() {
 
           {/* Right */}
           <div className="hidden lg:flex items-center gap-3">
+            <ThemeToggle />
             <Link
               href="/book"
               className="bg-[#d4af37] hover:bg-[#c9a227] text-black text-sm font-bold px-5 py-2.5 rounded-lg uppercase tracking-wide transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
@@ -68,7 +70,7 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden p-2 text-gray-400 hover:text-white transition-colors"
+            className="lg:hidden p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -83,7 +85,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-[#050B1A]/95 backdrop-blur-md border-t border-white/5 overflow-hidden"
+            className="lg:hidden bg-white/95 dark:bg-[#050B1A]/95 backdrop-blur-md border-t border-gray-200 dark:border-white/5 overflow-hidden"
           >
             <div className="px-4 py-4 space-y-1">
               {navLinks.map((link) => (
@@ -91,11 +93,14 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block py-3 px-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                  className="block py-3 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-colors"
                 >
                   {link.label}
                 </a>
               ))}
+              <div className="flex items-center gap-2 py-3 px-3">
+                <ThemeToggle />
+              </div>
               <Link
                 href="/book"
                 className="block mt-3 bg-[#d4af37] text-black text-sm font-bold px-4 py-3 rounded-lg text-center uppercase tracking-wide"
