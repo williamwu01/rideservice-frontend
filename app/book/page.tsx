@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import AddressInput from "@/components/AddressInput";
 
@@ -62,6 +62,49 @@ export default function BookPage() {
   const [promoLoading, setPromoLoading] = useState(false);
   const [payLoading, setPayLoading] = useState(false);
   const [payError, setPayError] = useState("");
+  const [reservationSecondsLeft, setReservationSecondsLeft] = useState(300);
+  const reservationTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const releaseReservation = useCallback(async (id: string) => {
+    try {
+      navigator.sendBeacon(`${API_URL}/api/bookings/${id}/release`);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    if (step !== "confirm" || !bookingId) return;
+
+    setReservationSecondsLeft(300);
+    reservationTimer.current = setInterval(() => {
+      setReservationSecondsLeft((s) => {
+        if (s <= 1) {
+          clearInterval(reservationTimer.current!);
+          releaseReservation(bookingId);
+          setBookingId("");
+          setDriver(null);
+          setStep("details");
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+
+    const onUnload = () => releaseReservation(bookingId);
+    window.addEventListener("beforeunload", onUnload);
+
+    return () => {
+      clearInterval(reservationTimer.current!);
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, [step, bookingId, releaseReservation]);
+
+  function handleBackFromConfirm() {
+    if (bookingId) releaseReservation(bookingId);
+    clearInterval(reservationTimer.current!);
+    setBookingId("");
+    setDriver(null);
+    setStep("details");
+  }
 
   async function handleGetEstimate(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -398,12 +441,17 @@ export default function BookPage() {
         {/* ── Step 3: Confirm & Pay ── */}
         {step === "confirm" && driver && estimate && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-            <button onClick={() => setStep("details")} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-5">
-              <ChevronLeft /> Back
-            </button>
+            <div className="flex items-center justify-between mb-5">
+              <button onClick={handleBackFromConfirm} className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
+                <ChevronLeft /> Back
+              </button>
+              <span className={`text-xs font-mono px-2 py-1 rounded-full ${reservationSecondsLeft <= 60 ? "bg-red-100 text-red-600" : "bg-amber-50 text-amber-600"}`}>
+                Reserved for {Math.floor(reservationSecondsLeft / 60)}:{String(reservationSecondsLeft % 60).padStart(2, "0")}
+              </span>
+            </div>
 
             <h2 className="text-xl font-bold text-gray-900 mb-1">Your driver is ready</h2>
-            <p className="text-sm text-gray-500 mb-6">Review your booking and complete payment to confirm.</p>
+            <p className="text-sm text-gray-500 mb-6">Complete payment within the reservation window to confirm.</p>
 
             {/* Driver card */}
             <div className="flex items-center gap-4 bg-indigo-50 rounded-xl p-4 mb-6">
