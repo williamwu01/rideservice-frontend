@@ -16,6 +16,7 @@ function SuccessContent() {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
+    console.log(orderId)
     if (!orderId) {
       setErrorMsg("No payment order found. Please contact support.");
       setStatus("error");

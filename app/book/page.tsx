@@ -64,6 +64,7 @@ export default function BookPage() {
   const [payError, setPayError] = useState("");
   const [reservationSecondsLeft, setReservationSecondsLeft] = useState(300);
   const reservationTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const paymentRedirecting = useRef(false);
 
   const releaseReservation = useCallback(async (id: string) => {
     try {
@@ -89,7 +90,9 @@ export default function BookPage() {
       });
     }, 1000);
 
-    const onUnload = () => releaseReservation(bookingId);
+    const onUnload = () => {
+      if (!paymentRedirecting.current) releaseReservation(bookingId);
+    };
     window.addEventListener("beforeunload", onUnload);
 
     return () => {
@@ -206,6 +209,7 @@ export default function BookPage() {
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.error || "Payment setup failed");
+      paymentRedirecting.current = true;
       window.location.href = data.approveUrl;
     } catch (err: unknown) {
       setPayError(err instanceof Error ? err.message : "Payment failed. Please try again.");
