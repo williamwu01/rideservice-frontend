@@ -31,7 +31,7 @@ export default function Contact() {
 
             <div className="space-y-4">
               <a
-                href="mailto:support@looprideshare.com"
+                href="mailto:Contact@ridelinkyvr.com"
                 className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group"
               >
                 <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center group-hover:bg-indigo-200 transition-colors">
@@ -39,12 +39,12 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="text-xs text-gray-500 font-medium">Customer Support</div>
-                  <div className="text-gray-900 font-semibold text-sm">support@looprideshare.com</div>
+                  <div className="text-gray-900 font-semibold text-sm">Contact@ridelinkyvr.com</div>
                 </div>
               </a>
 
               <a
-                href="mailto:info@looprideshare.com"
+                href="mailto:Contact@ridelinkyvr.com"
                 className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group"
               >
                 <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
@@ -52,7 +52,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="text-xs text-gray-500 font-medium">General Inquiries</div>
-                  <div className="text-gray-900 font-semibold text-sm">info@looprideshare.com</div>
+                  <div className="text-gray-900 font-semibold text-sm">Contact@ridelinkyvr.com</div>
                 </div>
               </a>
             </div>

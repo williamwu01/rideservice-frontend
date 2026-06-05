@@ -182,11 +182,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55 }}
-          className="mt-12 flex gap-8 sm:gap-16 text-center"
+          className="mt-12 mb-20 flex gap-8 sm:gap-16 text-center"
         >
           {[
-            { value: "20+", label: "Canadian Cities" },
-            { value: "3", label: "World Cup Hosts" },
+            { value: "YVR", label: "Vancouver, BC" },
+            { value: "FIFA", label: "2026 Ready" },
             { value: "4.9★", label: "Driver Rating" },
           ].map((s) => (
             <div key={s.label}>

@@ -11,8 +11,8 @@ const features = [
   },
   {
     icon: "🏆",
-    title: "FIFA 2026 Routes",
-    desc: "Pre-mapped routes to all Canadian World Cup stadiums across Vancouver, Toronto, and Kansas City.",
+    title: "FIFA 2026 Ready",
+    desc: "Your dedicated driver to and from all Vancouver FIFA 2026 venues — when the city is at its busiest, we have you covered.",
     color: "#d4af37",
   },
   {
@@ -35,8 +35,8 @@ const features = [
   },
   {
     icon: "🌍",
-    title: "20+ Cities",
-    desc: "From Vancouver to Toronto, we operate across Canada's major hubs and World Cup host cities.",
+    title: "Vancouver & Beyond",
+    desc: "Currently serving Metro Vancouver, BC. Expanding to other Canadian provinces soon — stay tuned.",
     color: "#00a0dc",
   },
 ];
@@ -47,7 +47,7 @@ export default function Features() {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal className="text-center mb-16">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#d4af37] mb-3 block">
-            Why Loop
+            Why RideLink
           </span>
           <h2 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white mb-4">
             Built for the World Cup

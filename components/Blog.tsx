@@ -2,30 +2,30 @@ import { ArrowRight, Clock } from "lucide-react";
 
 const posts = [
   {
-    title: "Gas Prices Hit $2/Litre in Ontario — How Carpooling Can Save You Hundreds",
+    title: "Why Uber and Taxis Will Let You Down During FIFA 2026 in Vancouver",
     excerpt:
-      "With gas prices soaring across Ontario, more Canadians are turning to rideshare as a cost-effective alternative. Here's how Loop can help you cut costs.",
+      "With hundreds of thousands of visitors flooding Vancouver for FIFA 2026, surge pricing and wait times will be extreme. Here is why a pre-booked private driver is the smart move.",
     date: "May 8, 2026",
     readTime: "4 min read",
-    category: "Savings",
+    category: "FIFA 2026",
     color: "bg-orange-100 text-orange-700",
   },
   {
-    title: "Carpool vs. Bus vs. Train vs. Driving: Which Is Best for Your Commute?",
+    title: "Your Complete Guide to Getting Around Vancouver During the World Cup",
     excerpt:
-      "We break down the real costs, convenience, and environmental impact of each transportation option so you can make the smartest choice for your commute.",
+      "From stadium drop-offs to hotel pickups, we break down everything you need to know about transportation in Vancouver during FIFA 2026 match days.",
     date: "May 4, 2026",
     readTime: "6 min read",
-    category: "Comparison",
+    category: "Vancouver",
     color: "bg-blue-100 text-blue-700",
   },
   {
-    title: "5 Ways to Use Loop Delivery for Your Business or Personal Needs",
+    title: "RideLink Is Expanding: Which Canadian Provinces Are Coming Next",
     excerpt:
-      "Loop's new package delivery feature opens up exciting possibilities. From sending gifts to running small business logistics — here's how to make it work for you.",
+      "We launched in Vancouver, BC and the response has been incredible. Here is a look at where RideLink is headed next as we expand across Canada.",
     date: "Jan 2, 2026",
     readTime: "5 min read",
-    category: "Delivery",
+    category: "News",
     color: "bg-green-100 text-green-700",
   },
 ];
@@ -40,7 +40,7 @@ export default function Blog() {
               Blog
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
-              Latest from Loop
+              Latest from RideLink
             </h2>
           </div>
           <a

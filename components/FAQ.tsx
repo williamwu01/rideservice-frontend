@@ -8,38 +8,38 @@ const categories = [
     category: "General",
     items: [
       {
-        q: "What is Loop Rideshare?",
-        a: "Loop is Canada's trusted rideshare and carpool platform. It connects drivers with empty seats to passengers heading in the same direction, making travel more affordable, social, and eco-friendly.",
+        q: "What is RideLink?",
+        a: "RideLink is a private pick-up and drop-off service based in Vancouver, BC. We provide dedicated, pre-booked rides so you always have a driver ready — no hailing, no waiting, no surge pricing.",
       },
       {
-        q: "Which cities does Loop operate in?",
-        a: "Loop currently operates in 20+ major Canadian cities including Toronto, Vancouver, Montreal, Calgary, Ottawa, Hamilton, London, Kitchener, Winnipeg, Halifax, and more.",
+        q: "Where does RideLink operate?",
+        a: "We currently serve Metro Vancouver, BC, including Vancouver, Burnaby, Richmond, Surrey, North Vancouver, Coquitlam, and surrounding areas. We are actively expanding to other Canadian provinces — stay tuned.",
       },
     ],
   },
   {
-    category: "Rider-Related",
+    category: "Booking",
     items: [
       {
         q: "How do I book a ride?",
-        a: "Open the Loop app, enter your pickup and destination, choose a trip from available options, and confirm your booking. You'll receive real-time updates from your driver.",
+        a: "You can book online using our booking form, or message us directly on WhatsApp. No app download needed. Enter your pickup location, destination, and date — we handle the rest.",
       },
       {
         q: "Can I cancel a booking?",
-        a: "Yes, you can cancel a booking through the app. Cancellation policies vary by trip — check the specific trip details before booking.",
+        a: "Yes. Message us on WhatsApp as soon as possible if your plans change. Cancellations made well in advance can be fully refunded depending on timing.",
       },
     ],
   },
   {
-    category: "Driver-Related",
+    category: "FIFA 2026",
     items: [
       {
-        q: "How do I become a Loop driver?",
-        a: "Download the Loop app, create a driver profile, complete ID verification and background check, and post your first trip. The whole process takes less than 30 minutes.",
+        q: "Why use RideLink during FIFA World Cup 2026?",
+        a: "During FIFA 2026, Vancouver will be one of the busiest cities in Canada. Uber and taxis will be overwhelmed and hard to coordinate. RideLink gives you a pre-booked, private driver who shows up on time — no surge, no scramble.",
       },
       {
-        q: "How much can I earn as a driver?",
-        a: "Earnings vary by route and frequency. Loop charges lower fees than competitors, so drivers keep more of every fare. Payments are made weekly directly to your bank account.",
+        q: "Do you service FIFA 2026 venues in Vancouver?",
+        a: "Yes. We cover all FIFA 2026 match day venues and surrounding areas in Vancouver. Book in advance to guarantee your ride on match days.",
       },
     ],
   },
@@ -47,12 +47,12 @@ const categories = [
     category: "Safety & Security",
     items: [
       {
-        q: "How does Loop verify drivers?",
-        a: "All drivers undergo ID verification and criminal background checks before being approved on the platform. Real-time GPS tracking and two-way ratings keep both parties accountable.",
+        q: "How does RideLink verify drivers?",
+        a: "Every RideLink driver is background-checked, licensed, and rated by real passengers. We maintain strict standards so you always ride with someone you can trust.",
       },
       {
-        q: "What if I feel unsafe during a trip?",
-        a: "The app has an emergency button that contacts local authorities. Our 24/7 support team is always available, and all trips are GPS-tracked for your safety.",
+        q: "What if I have an issue during my ride?",
+        a: "Our support team is reachable via WhatsApp. All rides are tracked and logged. If anything goes wrong, contact us immediately and we will resolve it.",
       },
     ],
   },
@@ -61,20 +61,11 @@ const categories = [
     items: [
       {
         q: "What payment methods are accepted?",
-        a: "Loop accepts all major credit and debit cards, plus in-app Loop Coins for discounts. All transactions are processed securely through the app.",
+        a: "We accept payment via PayPal. Your fare is fixed and confirmed before your ride — no surprise charges on the day.",
       },
       {
         q: "How do refunds work?",
-        a: "Refunds are processed within 3-5 business days depending on your bank. Contact support@looprideshare.com for any payment disputes.",
-      },
-    ],
-  },
-  {
-    category: "Package Delivery",
-    items: [
-      {
-        q: "How does Loop Delivery work?",
-        a: "Drivers with available space can accept package delivery requests along their route. Senders drop off a package, and it's delivered same-day to the recipient in the destination city.",
+        a: "Refunds are processed within 3-5 business days. Message us on WhatsApp or reach out through the contact form and we will take care of it.",
       },
     ],
   },
@@ -94,7 +85,7 @@ export default function FAQ() {
             Frequently Asked Questions
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Everything you need to know about Loop Rideshare.
+            Everything you need to know about RideLink.
           </p>
         </div>
 

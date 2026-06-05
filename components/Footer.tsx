@@ -31,7 +31,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-200 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500 dark:text-gray-600">
-          <span>© 2026 Loop Rideshare Inc. All rights reserved.</span>
+          <span>© 2026 RideLink. All rights reserved.</span>
           <span>FIFA World Cup 2026™ - We got you!</span>
         </div>
       </div>

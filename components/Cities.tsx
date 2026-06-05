@@ -4,22 +4,22 @@ import { useState } from "react";
 import { MapPin, ChevronDown } from "lucide-react";
 
 const cities = [
-  { name: "Toronto", province: "ON", routes: 142 },
-  { name: "Vancouver", province: "BC", routes: 98 },
-  { name: "Montreal", province: "QC", routes: 87 },
-  { name: "Calgary", province: "AB", routes: 74 },
-  { name: "Ottawa", province: "ON", routes: 65 },
-  { name: "Hamilton", province: "ON", routes: 53 },
-  { name: "London", province: "ON", routes: 48 },
-  { name: "Kitchener", province: "ON", routes: 41 },
-  { name: "Winnipeg", province: "MB", routes: 39 },
-  { name: "Halifax", province: "NS", routes: 32 },
-  { name: "Barrie", province: "ON", routes: 27 },
-  { name: "Kelowna", province: "BC", routes: 24 },
-  { name: "Edmonton", province: "AB", routes: 36 },
-  { name: "Saskatoon", province: "SK", routes: 19 },
-  { name: "Windsor", province: "ON", routes: 21 },
-  { name: "Mississauga", province: "ON", routes: 58 },
+  { name: "Vancouver", province: "BC", routes: 98, comingSoon: false },
+  { name: "Burnaby", province: "BC", routes: 64, comingSoon: false },
+  { name: "Richmond", province: "BC", routes: 52, comingSoon: false },
+  { name: "Surrey", province: "BC", routes: 47, comingSoon: false },
+  { name: "North Vancouver", province: "BC", routes: 38, comingSoon: false },
+  { name: "Coquitlam", province: "BC", routes: 31, comingSoon: false },
+  { name: "New Westminster", province: "BC", routes: 24, comingSoon: false },
+  { name: "Langley", province: "BC", routes: 21, comingSoon: false },
+  { name: "Abbotsford", province: "BC", routes: 18, comingSoon: false },
+  { name: "Calgary", province: "AB", routes: 0, comingSoon: true },
+  { name: "Edmonton", province: "AB", routes: 0, comingSoon: true },
+  { name: "Toronto", province: "ON", routes: 0, comingSoon: true },
+  { name: "Ottawa", province: "ON", routes: 0, comingSoon: true },
+  { name: "Montreal", province: "QC", routes: 0, comingSoon: true },
+  { name: "Winnipeg", province: "MB", routes: 0, comingSoon: true },
+  { name: "Halifax", province: "NS", routes: 0, comingSoon: true },
 ];
 
 export default function Cities() {
@@ -34,11 +34,10 @@ export default function Cities() {
             Service Areas
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
-            Available in 20+ Canadian Cities
+            Based in Metro Vancouver, BC
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto text-lg">
-            Loop connects riders and drivers across Canada. Find trips near you
-            or post your route to any major city.
+            RideLink currently serves Metro Vancouver. We are expanding to other Canadian provinces soon — more cities coming.
           </p>
         </div>
 
@@ -54,7 +53,7 @@ export default function Cities() {
               </div>
               <div>
                 <div className="font-semibold text-gray-900 dark:text-white text-sm">{city.name}</div>
-                <div className="text-gray-500 dark:text-gray-400 text-xs">{city.province} · {city.routes} active routes</div>
+                <div className="text-gray-500 dark:text-gray-400 text-xs">{city.province} · {city.comingSoon ? "Coming Soon" : `${city.routes} active pickups`}</div>
               </div>
             </a>
           ))}
