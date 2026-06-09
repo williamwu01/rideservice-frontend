@@ -44,6 +44,7 @@ export default function BookPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("1");
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTimeStr, setPickupTimeStr] = useState("");
   const [passengers, setPassengers] = useState(1);
@@ -143,7 +144,7 @@ export default function BookPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          phone: `+1${phone.replace(/\D/g, "")}`,
+          phone: `+${countryCode}${phone.replace(/\D/g, "")}`,
           firstName,
           lastName,
           pickup,
@@ -378,12 +379,36 @@ export default function BookPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp number</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Phone number</label>
                 <div className="flex">
-                  <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-sm">+1</span>
-                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(604) 555-0100" required className="flex-1 px-4 py-3 rounded-r-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="px-2 py-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-50 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="1">🇨🇦 +1</option>
+                    <option value="1">🇺🇸 +1</option>
+                    <option value="44">🇬🇧 +44</option>
+                    <option value="61">🇦🇺 +61</option>
+                    <option value="64">🇳🇿 +64</option>
+                    <option value="91">🇮🇳 +91</option>
+                    <option value="86">🇨🇳 +86</option>
+                    <option value="852">🇭🇰 +852</option>
+                    <option value="65">🇸🇬 +65</option>
+                    <option value="60">🇲🇾 +60</option>
+                    <option value="63">🇵🇭 +63</option>
+                    <option value="81">🇯🇵 +81</option>
+                    <option value="82">🇰🇷 +82</option>
+                    <option value="886">🇹🇼 +886</option>
+                    <option value="49">🇩🇪 +49</option>
+                    <option value="33">🇫🇷 +33</option>
+                    <option value="52">🇲🇽 +52</option>
+                    <option value="55">🇧🇷 +55</option>
+                    <option value="971">🇦🇪 +971</option>
+                  </select>
+                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="604 555-0100" required className="flex-1 px-4 py-3 rounded-r-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
-                <p className="text-xs text-gray-400 mt-1">We&apos;ll send your driver confirmation here.</p>
+                <p className="text-xs text-gray-400 mt-1">We&apos;ll send your driver confirmation by text.</p>
               </div>
 
               <div className="grid grid-cols-2 gap-3">

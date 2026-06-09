@@ -22,11 +22,11 @@ const categories = [
     items: [
       {
         q: "How do I book a ride?",
-        a: "You can book online using our booking form, or message us directly on WhatsApp. No app download needed. Enter your pickup location, destination, and date — we handle the rest.",
+        a: "You can book online using our booking form, or message us directly on text message. No app download needed. Enter your pickup location, destination, and date — we handle the rest.",
       },
       {
         q: "Can I cancel a booking?",
-        a: "Yes. Message us on WhatsApp as soon as possible if your plans change. Cancellations made well in advance can be fully refunded depending on timing.",
+        a: "Yes. Message us on text message as soon as possible if your plans change. Cancellations made well in advance can be fully refunded depending on timing.",
       },
     ],
   },
@@ -52,7 +52,7 @@ const categories = [
       },
       {
         q: "What if I have an issue during my ride?",
-        a: "Our support team is reachable via WhatsApp. All rides are tracked and logged. If anything goes wrong, contact us immediately and we will resolve it.",
+        a: "Our support team is reachable via text message. All rides are tracked and logged. If anything goes wrong, contact us immediately and we will resolve it.",
       },
     ],
   },
@@ -65,7 +65,7 @@ const categories = [
       },
       {
         q: "How do refunds work?",
-        a: "Refunds are processed within 3-5 business days. Message us on WhatsApp or reach out through the contact form and we will take care of it.",
+        a: "Refunds are processed within 3-5 business days. Message us on text message or reach out through the contact form and we will take care of it.",
       },
     ],
   },

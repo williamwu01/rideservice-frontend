@@ -13,7 +13,7 @@ const steps = [
   {
     num: "02",
     title: "Confirm Your Details",
-    desc: "Add your name, WhatsApp number, and pickup time. No account needed.",
+    desc: "Add your name, phone number, and pickup time. No account needed.",
     color: "#d4af37",
   },
   {
@@ -25,7 +25,7 @@ const steps = [
   {
     num: "04",
     title: "Your Driver Arrives",
-    desc: "Get driver details over WhatsApp. Track in real time and ride in comfort.",
+    desc: "Get driver details by text. Track in real time and ride in comfort.",
     color: "#d4af37",
   },
 ];

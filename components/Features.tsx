@@ -23,9 +23,9 @@ const features = [
   },
   {
     icon: "💬",
-    title: "WhatsApp Booking",
-    desc: "No app download needed. Book, track, and manage your ride entirely over WhatsApp.",
-    color: "#25D366",
+    title: "SMS Booking",
+    desc: "No app download needed. Book, track, and manage your ride entirely over text message.",
+    color: "#4f46e5",
   },
   {
     icon: "💰",
